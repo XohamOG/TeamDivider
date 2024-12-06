@@ -1,0 +1,15 @@
+<h1>Team Formation</h1>
+<h2>Team 1</h2>
+<ul>
+    {% for player in team1 %}
+        <li>{{ player.name }} (Rating: {{ player.rating }}, {{ player.position }})</li>
+    {% endfor %}
+</ul>
+
+<h2>Team 2</h2>
+<ul>
+    {% for player in team2 %}
+        <li>{{ player.name }} (Rating: {{ player.rating }}, {{ player.position }})</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'player_list' %}">Back to Player Selection</a>

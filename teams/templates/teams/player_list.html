@@ -1,0 +1,12 @@
+<h1>Select Players</h1>
+<form method="post" action="{% url 'player_list' %}">
+    {% csrf_token %}
+    {% for player in players %}
+        <label>
+            <input type="checkbox" name="selected_players[]" value="{{ player.id }}" {% if player.is_selected %}checked{% endif %}>
+            {{ player.name }} (Rating: {{ player.rating }}, {{ player.position }})
+        </label><br>
+    {% endfor %}
+    <button type="submit">Generate Balanced Teams</button>
+</form>
+<a href="{% url 'add_player' %}">Add New Player</a>

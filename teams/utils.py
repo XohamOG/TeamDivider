@@ -1,30 +1,20 @@
 import random
 
-def divide_players_into_teams(players):
-    """
-    Divides players into two balanced teams with equal sizes and assigns a goalkeeper to each team.
-    :param players: List of player objects with 'rating' attributes
-    :return: Two dictionaries representing the teams with players and goalkeepers
-    """
-    if len(players) < 2:
-        return {"goalkeeper": None, "players": players}, {"goalkeeper": None, "players": []}
-    
-    # Sort players by rating (descending)
-    players = sorted(players, key=lambda x: x.rating, reverse=True)
+def divide_into_teams(players):
+    players = list(players)
+    random.shuffle(players)
 
-    # Assign goalkeepers randomly
-    goalkeepers = random.sample(players, 2)
-    players = [player for player in players if player not in goalkeepers]
+    # Separate goalkeepers
+    goalkeepers = [player for player in players if player.position == 'Goalkeeper']
+    field_players = [player for player in players if player.position != 'Goalkeeper']
 
-    # Initialize teams
-    team1 = {"goalkeeper": goalkeepers[0], "players": []}
-    team2 = {"goalkeeper": goalkeepers[1], "players": []}
+    # Randomly assign one goalkeeper to each team
+    team1 = [goalkeepers.pop()] if goalkeepers else []
+    team2 = [goalkeepers.pop()] if goalkeepers else []
 
-    # Distribute remaining players into teams
-    for player in players:
-        if len(team1["players"]) <= len(team2["players"]):
-            team1["players"].append(player)
-        else:
-            team2["players"].append(player)
+    # Split field players
+    midpoint = len(field_players) // 2
+    team1.extend(field_players[:midpoint])
+    team2.extend(field_players[midpoint:])
 
     return team1, team2
