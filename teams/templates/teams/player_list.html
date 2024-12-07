@@ -1,12 +1,36 @@
-<h1>Select Players</h1>
-<form method="post" action="{% url 'player_list' %}">
-    {% csrf_token %}
-    {% for player in players %}
-        <label>
-            <input type="checkbox" name="selected_players[]" value="{{ player.id }}" {% if player.is_selected %}checked{% endif %}>
-            {{ player.name }} (Rating: {{ player.rating }}, {{ player.position }})
-        </label><br>
-    {% endfor %}
-    <button type="submit">Generate Balanced Teams</button>
-</form>
-<a href="{% url 'add_player' %}">Add New Player</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searchable Player Dropdown</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <div class="dropdown">
+            <input
+                type="text"
+                id="playerSearch"
+                placeholder="Search players..."
+                onkeyup="filterPlayers()"
+            />
+            <div id="dropdownContent" class="dropdown-content">
+                <!-- Dynamically Rendered Player Links -->
+                {% for player in players %}
+                    <a href="/player/{{ player.id }}" class="player-item">
+                        {{ player.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <a href="/teams">Teams</a>
+        <a href="/contact">Contact</a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

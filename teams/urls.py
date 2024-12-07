@@ -1,8 +1,7 @@
 from django.urls import path
-from . import views
+from .views import PlayerListCreateAPIView, TeamFormationAPIView
 
 urlpatterns = [
-    path('', views.player_list, name='player_list'),
-    path('add/', views.add_player, name='add_player'),
-    path('teams/', views.team_formation, name='team_formation'),
+    path('players/', PlayerListCreateAPIView.as_view(), name='player-list-create'),
+    path('teams/', TeamFormationAPIView.as_view(), name='team-formation'),
 ]
