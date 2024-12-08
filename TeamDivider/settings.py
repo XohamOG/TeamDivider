@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-a2q8c#uluw6p#35#ymn3hs)polq@@=fcxa+$n@tcd_mjrx3s^+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['TeamDivider.onrender.com']
+ALLOWED_HOSTS = ['https://teamdivider.onrender.com']
 
 # Application definition
 
