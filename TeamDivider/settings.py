@@ -15,7 +15,11 @@ SECRET_KEY = 'django-insecure-a2q8c#uluw6p#35#ymn3hs)polq@@=fcxa+$n@tcd_mjrx3s^+
 DEBUG = False
 
 # Add domain without 'https://'
-ALLOWED_HOSTS = ['teamdivider.onrender.com']
+ALLOWED_HOSTS = [
+    'teamdivider.onrender.com',  # Your Render production domain
+    '127.0.0.1',                 # Localhost for development
+    'localhost',                 # Localhost for development (optional, for use with http://localhost)
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -104,7 +108,8 @@ CORS_ALLOW_ALL_ORIGINS = True  # This should be fine for now if you're in develo
 # You can also add:
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React app URL
+    "https://frontend-gdd9gdef7-xohamogs-projects.vercel.app",  # Vercel frontend URL
+    "http://localhost:3000",  # Local development URL
 ]
 
 # Logging configuration
