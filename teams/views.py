@@ -5,24 +5,14 @@ from .models import Player
 from .serializers import PlayerSerializer, TeamSerializer
 from .utils import divide_into_teams
 
-class PlayerListCreateAPIView(APIView):
-    def get(self, request):
-        """
-        Retrieve the list of all players.
-        """
-        players = Player.objects.all()
-        serializer = PlayerSerializer(players, many=True)
-        return Response(serializer.data)
+# views.py
+from rest_framework import generics
+from .models import Player
+from .serializers import PlayerSerializer
 
-    def post(self, request):
-        """
-        Add a new player to the database.
-        """
-        serializer = PlayerSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class PlayerListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer
 
 
 class TeamFormationAPIView(APIView):
