@@ -1,8 +1,14 @@
+import logging
+logger = logging.getLogger(__name__)
+
+
+
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
+from rest_framework import status, permissions, serializers
 from .models import Player
-from .serializers import PlayerSerializer, TeamSerializer, UserSerializer
+from .serializers import PlayerSerializer
 from .utils import divide_into_teams
 
 # views.py
@@ -10,12 +16,38 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
-class PlayerListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Player.objects.all()
-    serializer_class = PlayerSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.permissions import IsAuthenticated
 
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        data['username'] = self.user.username
+        return data
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+class PlayerListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = PlayerSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        logger.debug(f"Fetching players for user: {user.username}")
+        return Player.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+
+        user = self.request.user
+        logger.debug(f"Creating player for user: {user}")
+        print(user)
+        serializer.save(user=user)
 
 class TeamFormationAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         """
         Create teams based on selected players.
@@ -25,7 +57,7 @@ class TeamFormationAPIView(APIView):
             return Response({'error': 'No players selected.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Get the selected players
-        selected_players = Player.objects.filter(id__in=selected_player_ids)
+        selected_players = Player.objects.filter(id__in=selected_player_ids, user=request.user)
 
         if not selected_players.exists():
             return Response({'error': 'No valid players found.'}, status=status.HTTP_404_NOT_FOUND)

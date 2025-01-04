@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        fields = '__all__'
+        fields = ['id', 'name', 'position', 'rating', 'is_selected', 'user']  # Include 'user' if necessary
+        read_only_fields = ['user']  # Prevent the user from being set via the API
 
 class TeamSerializer(serializers.Serializer):
     team1 = serializers.ListField(child=serializers.CharField())
