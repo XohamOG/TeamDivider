@@ -111,7 +111,7 @@ CORS_ALLOW_ALL_ORIGINS = True  # This should be fine for now if you're in develo
 # You can also add:
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "https://frontend-gdd9gdef7-xohamogs-projects.vercel.app",  # Vercel frontend URL
+    "https://frontend-2aidbbg34-xohamogs-projects.vercel.app",  # Vercel frontend URL
     "http://localhost:3000",  # Local development URL
 ]
 
